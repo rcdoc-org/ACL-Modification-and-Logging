@@ -48,7 +48,7 @@ Used for automating the process for removing ACL permissions to all but a specif
 
 - Process_Access_Rules
     - This is the brains of the operation function. It checks if the user/group is in the allowed groups global variable and skips that run through if it is. If not it checks if the call was for removing access or adding rights. For both operations it conjoins this process with checking if the right exists for the user at all or not because it won't run through it's steps to remove something that doesn't exist. It handles most of the ACL rule processing by create a new file system right object via the Calculate_NewRights function and uses the built in methods on the access item to remove the old rights, create new rights, and apply the new rights to the access item. It also handles logging by calling the logging functions from within this function. 
-    
+
 - Check_For_Allowed_Groups
     - This function takes in the current ACL Access item and the global variable AllowedGroups and checks if the item's Identity Reference Value matches one of the user groups in the allowed groups variable. And then returns the result of that check.
 
@@ -71,3 +71,6 @@ Used for automating the process for removing ACL permissions to all but a specif
     - This function is only called when no actions are made on the ACL in question and logs the csv file declared as a global variable that no changes were made to the file/folder in question.
 
 ## Running Details:
+This is a very powerfull script that allows you to quickly remove or grant rights to users in a large scale way. 
+
+It can handle both removal and adding rights at the same time.
