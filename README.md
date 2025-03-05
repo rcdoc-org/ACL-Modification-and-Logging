@@ -25,6 +25,8 @@ Used for automating the process for removing ACL permissions to all but a specif
 
 ## Functions
 - Check_And_Create_BackupFolder
+This function simply checks via the built in function, "Test-Path" to see if the $BackupFolder already exists, and if not, "!", it creates the folder using the built in function, "New-Item".
+
 - Check_And_Create_LogFile
 - Capture_All_FilesFolders
 - Processing_FileFolder_Changes
