@@ -74,3 +74,7 @@ Used for automating the process for removing ACL permissions to all but a specif
 This is a very powerfull script that allows you to quickly remove or grant rights to users in a large scale way. 
 
 It can handle both removal and adding rights at the same time.
+
+You will want to make sure you update the global variables before each run. The log file will only append so you won't loss any log of changes but you would overwirte the ACL permissions xml if you kept rerunning lossing those original files.
+
+With any script please ensure this is the right tool for it's use before running it.
