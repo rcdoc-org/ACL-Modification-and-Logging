@@ -38,6 +38,8 @@ Used for automating the process for removing ACL permissions to all but a specif
     - This function takes in the root path given in the global variables and then captures all the files and folders into one array that's type [System.IO.DirectoryInfor[]] in the script. It then returns that array to the function, "Processing_FileFolder_Changes".
 
 - Processing_FileFolder_Changes
+    - This function takes in all the needed global variables It can handle both remove rights and add rights at the same time but runs them one after the other on each file in succession. This function then calls all other functions except for the Check_And_Create_BackupFolder, Check_And_Create_LogFile, and Capture_All_FilesFolders which run before it. This is similar to the main function of a program when called.
+    
 - Retrieve_Current_ACL
     - This function takes in an individual folder from the folders array that's passed via the function, "Processing_FileFolder_Changes". It then returns the ACL's on the item via the built in function, "Get-ACL".
 
