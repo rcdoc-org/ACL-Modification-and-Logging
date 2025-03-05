@@ -43,9 +43,11 @@ Used for automating the process for removing ACL permissions to all but a specif
 
 - Backup_Current_ACL
     - This function takes in an individual folder, the current ACL permissions on the item, and the Backup Folder path. It then uses a simple regular expression to replace invalid file names. Creates a backup file path using the built in function, "Join-Path". And lastly uses the built in function, "Export-Clixml" to export the current ACL to this new .xml file.
-    
+
 - Process_Access_Rules
 - Check_For_Allowed_Groups
+    - This function takes in the current ACL Access item and the global variable AllowedGroups and checks if the item's Identity Reference Value matches one of the user groups in the allowed groups variable. And then returns the result of that check.
+    
 - Check_For_Removed_Rights
 - Check_For_Add_Rights
 - Calculate_NewRights
