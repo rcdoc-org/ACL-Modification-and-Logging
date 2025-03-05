@@ -24,5 +24,18 @@ Used for automating the process for removing ACL permissions to all but a specif
     Used for declaring the path for the log file which should be a ".csv". This will hold the log of all changes made on all folders including if no changes were made.
 
 ## Functions
+- Check_And_Create_BackupFolder
+- Check_And_Create_LogFile
+- Capture_All_FilesFolders
+- Processing_FileFolder_Changes
+- Retrieve_Current_ACL
+- Backup_Current_ACL
+- Process_Access_Rules
+- Check_For_Allowed_Groups
+- Check_For_Removed_Rights
+- Calculate_NewRights
+- Log_To_CSV
+- Update_ACLS
+- Log_None_Modified
 
 ## Running Details:
