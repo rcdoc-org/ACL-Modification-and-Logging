@@ -3,7 +3,7 @@ $rootPath = "<rootPathGoesHere>"
 $allowedGroups = @("<Group1>","<Group2>","<etc.>")
 
 #Set the rights to be removed
-$removeRights = [System.Security.AccessControl.FileSystemRights]::Delete -bor [System.Security.AccessControl.FileSystemRights]::DeleteSubdirectoriesAndFiles
+$removeRights = [System.Security.AccessControl.FileSystemRights]::DeleteSubdirectoriesAndFiles
 
 #Set backup locations
 $backupFolder = "<backupFolderPathGoesHere>"
