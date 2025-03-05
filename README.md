@@ -40,8 +40,10 @@ Used for automating the process for removing ACL permissions to all but a specif
 - Processing_FileFolder_Changes
 - Retrieve_Current_ACL
     - This function takes in an individual folder from the folders array that's passed via the function, "Processing_FileFolder_Changes". It then returns the ACL's on the item via the built in function, "Get-ACL".
-    
+
 - Backup_Current_ACL
+    - This function takes in an individual folder, the current ACL permissions on the item, and the Backup Folder path. It then uses a simple regular expression to replace invalid file names. Creates a backup file path using the built in function, "Join-Path". And lastly uses the built in function, "Export-Clixml" to export the current ACL to this new .xml file.
+    
 - Process_Access_Rules
 - Check_For_Allowed_Groups
 - Check_For_Removed_Rights
