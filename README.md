@@ -39,7 +39,7 @@ Used for automating the process for removing ACL permissions to all but a specif
 
 - Processing_FileFolder_Changes
     - This function takes in all the needed global variables It can handle both remove rights and add rights at the same time but runs them one after the other on each file in succession. This function then calls all other functions except for the Check_And_Create_BackupFolder, Check_And_Create_LogFile, and Capture_All_FilesFolders which run before it. This is similar to the main function of a program when called.
-    
+
 - Retrieve_Current_ACL
     - This function takes in an individual folder from the folders array that's passed via the function, "Processing_FileFolder_Changes". It then returns the ACL's on the item via the built in function, "Get-ACL".
 
@@ -47,6 +47,8 @@ Used for automating the process for removing ACL permissions to all but a specif
     - This function takes in an individual folder, the current ACL permissions on the item, and the Backup Folder path. It then uses a simple regular expression to replace invalid file names. Creates a backup file path using the built in function, "Join-Path". And lastly uses the built in function, "Export-Clixml" to export the current ACL to this new .xml file.
 
 - Process_Access_Rules
+    - This is the brains of the operation function. It checks if the user/group is in the allowed groups global variable and skips that run through if it is. If not it checks if the call was for removing access or adding rights. For both operations it conjoins this process with checking if the right exists for the user at all or not because it won't run through it's steps to remove something that doesn't exist. It handles most of the ACL rule processing by create a new file system right object via the Calculate_NewRights function and uses the built in methods on the access item to remove the old rights, create new rights, and apply the new rights to the access item. It also handles logging by calling the logging functions from within this function. 
+    
 - Check_For_Allowed_Groups
     - This function takes in the current ACL Access item and the global variable AllowedGroups and checks if the item's Identity Reference Value matches one of the user groups in the allowed groups variable. And then returns the result of that check.
 
