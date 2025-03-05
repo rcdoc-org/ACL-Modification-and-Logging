@@ -59,8 +59,10 @@ Used for automating the process for removing ACL permissions to all but a specif
 
 - Log_To_CSV
     - This function is designed to complete the simple task of loggin the changes made. It takes in multiple variables for logging and crates a line item variable. That line item variable is then piped into the built in function, "Out-File" via an append for keeping track of the log of changes.
-    
+
 - Update_ACLS
+    - This function applies the actual change to the folder/item ACLs. It does this by first taking in the folder item, and new acl that was generated during the "Process_Access_Rules" function. It has a try - catch where it tries to use the built in function, "Set-ACL" to set the file/folder with the new ACL object. If successful it prints the terminal that the folder/item in question was updated. If it fails it catches the error and prints a warning explaining what occurred and showing the error afterwords from the terminal. Then it safely returns the "Process_Access_Rules" function.
+    
 - Log_None_Modified
 
 ## Running Details:
