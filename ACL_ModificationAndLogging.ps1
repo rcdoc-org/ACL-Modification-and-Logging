@@ -4,6 +4,7 @@ $allowedGroups = @("<Group1>","<Group2>","<etc.>")
 
 #Set the rights to be removed
 $removeRights = [System.Security.AccessControl.FileSystemRights]::DeleteSubdirectoriesAndFiles
+$addRights = [System.Security.AccessControl.FileSystemRights]::Delete
 
 #Set backup locations
 $backupFolder = "<backupFolderPathGoesHere>"
@@ -63,8 +64,8 @@ function Processing_FileFolder_Changes {
         [System.IO.DirectoryInfo[]]$Folders,
         [Parameter(Mandatory = $true)]
         [string[]]$AllowedGroups,
-        [Parameter(Mandatory = $true)]
         [System.Security.AccessControl.FileSystemRights]$RemoveRights,
+        [System.Security.AccessControl.FileSystemRights]$AddRights,
         [Parameter(Mandatory = $true)]
         [string]$LogFile,
         [Parameter(Mandatory = $true)]
@@ -81,14 +82,27 @@ function Processing_FileFolder_Changes {
         Backup_Current_ACL -Folder $folder -Acl $acl -BackupFolder $BackupFolder
 
         #Process access rules one by one
-        $modified = Process_Access_Rules -Folder $folder -Acl $acl -AllowedGroups $AllowedGroups -RemoveRights $RemoveRights -LogFile $LogFile
+        if($RemoveRights){
+            $modified = Process_Access_Rules -Folder $folder -Acl $acl -AllowedGroups $AllowedGroups -RemoveRights $RemoveRights -LogFile $LogFile
 
-        if($modified) {
-            Update_ACLS -Folder $folder -Acl $acl
+            if($modified) {
+                Update_ACLS -Folder $folder -Acl $acl
+            }
+            else {
+                Log_None_Modified -Folder $folder -LogFile $LogFile
+            }
         }
-        else {
-            Log_None_Modified -Folder $folder -LogFile $LogFile
+        if($AddRights){
+            $modified = Process_Access_Rules -Folder $folder -Acl $acl -AllowedGroups $AllowedGroups -AddRights $AddRights -LogFile $LogFile
+
+            if($modified) {
+                Update_ACLS -Folder $folder -Acl $acl
+            }
+            else {
+                Log_None_Modified -Folder $folder -LogFile $LogFile
+            }
         }
+
 
     }
 }
@@ -132,8 +146,8 @@ function Process_Access_Rules {
         $Acl,
         [Parameter(Mandatory = $true)]
         [string[]]$AllowedGroups,
-        [Parameter(Mandatory = $true)]
         [System.Security.AccessControl.FileSystemRights]$RemoveRights,
+        [System.Security.AccessControl.FileSystemRights]$AddRights,
         [Parameter(Mandatory = $true)]
         [string]$LogFile
     )
@@ -145,7 +159,7 @@ function Process_Access_Rules {
             continue
         }
         # Check if the ACE includes rights we need to remove.
-        if (Check_For_Removed_Rights -Access $access -RemoveRights $RemoveRights) {
+        if ($RemoveRights -and (Check_For_Removed_Rights -Access $access -RemoveRights $RemoveRights)) {
             $modified = $true
             $originalRights = $access.FileSystemRights
             $newRights = Calculate_NewRights -Access $access -RemoveRights $RemoveRights
@@ -162,6 +176,25 @@ function Process_Access_Rules {
             $Acl.AddAccessRule($newRule)
             
             Write-Host "Updated ACL for $($access.IdentityReference) on $($Folder.FullName)"
+            Log_To_CSV -Folder $Folder -Identity $access.IdentityReference -OriginalRights $originalRights `
+                       -NewRights $newRights -LogFile $LogFile -Action "Modified"
+        }
+        if ($AddRights -and (Check_For_Add_Rights -Access $access -AddRights $AddRights)) {
+            $modified = $true
+            $originalRights = $access.FileSystemRights
+            $newRights = Calculate_NewRights -Access $access -AddRights $AddRights
+
+            $Acl.RemoveAccessRule($access)
+            $newRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+                $access.IdentityReference,
+                $newRights,
+                $access.InheritanceFlags,
+                $access.PropagationFlags,
+                $access.AccessControlType
+            )
+            $Acl.AddAccessRule($newRule)
+
+            Write-Host "Added ACL for $($access.IdentityReference) on $($Folder.FullName)"
             Log_To_CSV -Folder $Folder -Identity $access.IdentityReference -OriginalRights $originalRights `
                        -NewRights $newRights -LogFile $LogFile -Action "Modified"
         }
@@ -195,15 +228,35 @@ function Check_For_Removed_Rights {
     return ( ($Access.FileSystemRights -band $RemoveRights) -ne 0 )
 }
 
+###############################################################################
+# FUNCTION: Check_For_Add_Rights
+###############################################################################
+function Check_For_Add_Rights {
+    param(
+        [Parameter(Mandatory = $true)]
+        $Access,
+        [Parameter(Mandatory = $true)]
+        [System.Security.AccessControl.FileSystemRights]$AddRights
+    )
+    return ( ($Access.FileSystemRights -band $AddRights) -eq 0 )
+}
+
 #calculate new rights by removing deleate rights.
 function Calculate_NewRights {
     param(
         [Parameter(Mandatory = $true)]
         $Access,
-        [Parameter(Mandatory = $true)]
-        [System.Security.AccessControl.FileSystemRights]$RemoveRights
+        [System.Security.AccessControl.FileSystemRights]$RemoveRights,
+        [System.Security.AccessControl.FileSystemRights]$AddRights
     )
-    return $Access.FileSystemRights -band (-bnot $RemoveRights)
+    if ($RemoveRights) {
+        return $Access.FileSystemRights -band (-bnot $RemoveRights)
+    }
+    if ($AddRights) {
+        return $Access.FileSystemRights -bor $AddRights
+    }
+    
+    return $Access.FileSystemRights
 }
 
 ###############################################################################
