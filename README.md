@@ -49,9 +49,10 @@ Used for automating the process for removing ACL permissions to all but a specif
     - This function takes in the current ACL Access item and the global variable AllowedGroups and checks if the item's Identity Reference Value matches one of the user groups in the allowed groups variable. And then returns the result of that check.
 
 - Check_For_Removed_Rights
-    - This function takes in the current access item and the global variable remove rights. It does a bit operation to check if the removed right exists on the existing rights and returns an expression comparing the result to if its not equal to 0. 
-    
+    - This function takes in the current access item and the global variable remove rights. It does a bit operation to check if the removed right exists on the existing rights and returns an expression comparing the result to if it's not equal to 0. 
+
 - Check_For_Add_Rights
+    - This function takes in the current access item and the global variable remove rights. It does a bit operation to check if the removed right exists on the existing rights and returns an expression comparing the result to if it is equal to 0. 
 - Calculate_NewRights
 - Log_To_CSV
 - Update_ACLS
