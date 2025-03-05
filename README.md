@@ -14,6 +14,10 @@ Used for automating the process for removing ACL permissions to all but a specif
     - Type: [System.Security.AccessControl.FileSystemRights]
     - Purpose:
     Used for declaring the ACLs we want to remove from users. Its only used by the function, "Process_Access_Rules".
+- addRights
+    - Type: [System.Security.AccessControl.FileSystemRights]
+    - Purpose:
+    Used for declaring the ACLs we want to add to users. Its only used by the function, "Process_Access_Rules".
 - backupFolder
     - Type: [String]
     - Purpose:
@@ -37,6 +41,7 @@ Used for automating the process for removing ACL permissions to all but a specif
 - Process_Access_Rules
 - Check_For_Allowed_Groups
 - Check_For_Removed_Rights
+- Check_For_Add_Rights
 - Calculate_NewRights
 - Log_To_CSV
 - Update_ACLS
