@@ -35,6 +35,8 @@ Used for automating the process for removing ACL permissions to all but a specif
     - This function simply checks via the built in function, "Test-Path" to see if the $LogFile already exists, and if not, "!", it creates the log file using a string header that is piped to a built in function, "Out-File" to create the needed csv file.
 
 - Capture_All_FilesFolders
+    - This function takes in the root path given in the global variables and then captures all the files and folders into one array that's type [System.IO.DirectoryInfor[]] in the script. It then returns that array to the function, "Processing_FileFolder_Changes".
+    
 - Processing_FileFolder_Changes
 - Retrieve_Current_ACL
 - Backup_Current_ACL
