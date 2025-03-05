@@ -54,7 +54,9 @@ function Capture_All_FilesFolders {
     return $folders
 }
 
-
+###############################################################################
+# FUNCTION: Processing_FileFolderChanges
+###############################################################################
 function Processing_FileFolder_Changes {
     param(
         [Parameter(Mandatory = $true)]
