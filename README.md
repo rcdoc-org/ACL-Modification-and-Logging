@@ -53,7 +53,10 @@ Used for automating the process for removing ACL permissions to all but a specif
 
 - Check_For_Add_Rights
     - This function takes in the current access item and the global variable remove rights. It does a bit operation to check if the removed right exists on the existing rights and returns an expression comparing the result to if it is equal to 0. 
+
 - Calculate_NewRights
+    - This function is designed around the principle that either the access item and removed items is sent to it or the access item and add items is sent to it. Based on which global variable came into the function determines the expression used via bit operations. This will either remove the right using both -band and -bnot or add the right using -bor.
+    
 - Log_To_CSV
 - Update_ACLS
 - Log_None_Modified
