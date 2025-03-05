@@ -62,7 +62,8 @@ Used for automating the process for removing ACL permissions to all but a specif
 
 - Update_ACLS
     - This function applies the actual change to the folder/item ACLs. It does this by first taking in the folder item, and new acl that was generated during the "Process_Access_Rules" function. It has a try - catch where it tries to use the built in function, "Set-ACL" to set the file/folder with the new ACL object. If successful it prints the terminal that the folder/item in question was updated. If it fails it catches the error and prints a warning explaining what occurred and showing the error afterwords from the terminal. Then it safely returns the "Process_Access_Rules" function.
-    
+
 - Log_None_Modified
+    - This function is only called when no actions are made on the ACL in question and logs the csv file declared as a global variable that no changes were made to the file/folder in question.
 
 ## Running Details:
