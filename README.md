@@ -22,3 +22,7 @@ Used for automating the process for removing ACL permissions to all but a specif
     - Type: [String]
     - Purpose:
     Used for declaring the path for the log file which should be a ".csv". This will hold the log of all changes made on all folders including if no changes were made.
+
+## Functions
+
+## Running Details:
