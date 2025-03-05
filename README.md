@@ -56,8 +56,10 @@ Used for automating the process for removing ACL permissions to all but a specif
 
 - Calculate_NewRights
     - This function is designed around the principle that either the access item and removed items is sent to it or the access item and add items is sent to it. Based on which global variable came into the function determines the expression used via bit operations. This will either remove the right using both -band and -bnot or add the right using -bor.
-    
+
 - Log_To_CSV
+    - This function is designed to complete the simple task of loggin the changes made. It takes in multiple variables for logging and crates a line item variable. That line item variable is then piped into the built in function, "Out-File" via an append for keeping track of the log of changes.
+    
 - Update_ACLS
 - Log_None_Modified
 
